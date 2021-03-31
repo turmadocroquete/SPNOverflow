@@ -1,6 +1,6 @@
 # SPNOverflow
 
-* Vestas Logo images
+
 ![](vestaslogo.jpeg)
 
 Apparently there's something about the images...I wonder!
