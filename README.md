@@ -94,7 +94,7 @@ Possible Hashs:
  It is indeed a **SHA-256**, we can use `findmyhash.py` uitlity to get the plain text which is (**SPOILER ALERT**) 1234567891234567.
  
  ``` 
- findmyhash SHA256 -h 59f271f6309355962f0fec64dca36cff44776ea4e199ed0a350147e15e0f3a6c
+ └─$ findmyhash SHA256 -h 59f271f6309355962f0fec64dca36cff44776ea4e199ed0a350147e15e0f3a6c
 
 Cracking hash: 59f271f6309355962f0fec64dca36cff44776ea4e199ed0a350147e15e0f3a6c
 
@@ -114,7 +114,7 @@ The following hashes were cracked:
 Now the only thing missing is to use the AES-128-CBC algorithm with the secret key.
 
 ```
-echo "D7fKPOftK2aYzKn0F7z+BeAmQeyAMZ0w+N5gCm5KlQ9JdVVcpS3+V/+APnnaHv2fN+z+wGLyI+1oS7FzszN5vbz/sNyt98/vcLYR7RJDb3cSQi8gV0Q5VgrtqVoksQ+F43l+7cdesdHZbCoc84/aJA==" \
+└─$ echo "D7fKPOftK2aYzKn0F7z+BeAmQeyAMZ0w+N5gCm5KlQ9JdVVcpS3+V/+APnnaHv2fN+z+wGLyI+1oS7FzszN5vbz/sNyt98/vcLYR7RJDb3cSQi8gV0Q5VgrtqVoksQ+F43l+7cdesdHZbCoc84/aJA==" \
 | openssl enc -d -aes-128-cbc -k "1234567891234567" | openssl base64 -d
 
 https://vestas-my.sharepoint.com/:b:/p/rougo/EbAiKAsZzl1HjOud4AnUZKUBRzRx4R6pTcnFgFNeUQqMcg?e=snqO2E
