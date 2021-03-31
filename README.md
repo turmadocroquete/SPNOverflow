@@ -1,7 +1,7 @@
 # SPNOverflow
 
 * Vestas Logo images
-![Vestas Logo]()
+![](vestaslogo.jpeg)
 
 Apparently there's something about the images...I wonder!
 Usually, when dealing with images you start by looking at the METADATA, encoding patterns, etc... but there's nothing useful on that.
