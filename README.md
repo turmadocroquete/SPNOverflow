@@ -111,6 +111,14 @@ The following hashes were cracked:
 
 ```
 
+Now the only thing missing is to use the AES-128-CBC algorithm with the secret key.
+
+```
+echo "D7fKPOftK2aYzKn0F7z+BeAmQeyAMZ0w+N5gCm5KlQ9JdVVcpS3+V/+APnnaHv2fN+z+wGLyI+1oS7FzszN5vbz/sNyt98/vcLYR7RJDb3cSQi8gV0Q5VgrtqVoksQ+F43l+7cdesdHZbCoc84/aJA==" | openssl enc -d -aes-128-cbc -k "1234567891234567" | openssl base64 -d
+
+https://vestas-my.sharepoint.com/:b:/p/rougo/EbAiKAsZzl1HjOud4AnUZKUBRzRx4R6pTcnFgFNeUQqMcg?e=snqO2E
+```
+
 
  
  
