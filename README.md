@@ -5,7 +5,7 @@
 
 Apparently there's something about the images...I wonder!
 Usually, when dealing with images you start by looking at the METADATA, encoding patterns, etc... but there's nothing useful on that.
-We do know that files types can embed other files types. Binwalk is a well-known and used utility that searchs a given binary image for embedded files and executable code. Let's give it a try!
+We do know that files types can embed other files types. **Binwalk** is a well-known and used utility that searchs a given binary image for embedded files and executable code. Let's give it a try!
 
 ```
 └─$ binwalk vestaslogo.jpeg     
