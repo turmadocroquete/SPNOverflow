@@ -43,7 +43,8 @@ namespace te404
 
             Console.WriteLine("***INSTRUCTIONS***");
             Console.WriteLine("Type the path you want cowboy! Most probabily you will get the best of it ;)");
-            Console.WriteLine("The path choose must contain the following values: (n)orth, (s)outh, (e)ast, (w)est or exit (to stop)!");
+            Console.WriteLine("The path choose must contain the following values: (n)orth, (s)outh, (e)ast or (w)est");
+            Console.WriteLine("When you're done, type 'exit' to stop the reading!");
             Console.WriteLine("Values can be in any case...");
             Console.WriteLine("Here's a path you can try out: north, south, south, west, north!");
             Console.WriteLine("If you type any other value, you'll be busted!");
