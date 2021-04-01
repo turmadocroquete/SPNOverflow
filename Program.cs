@@ -1,6 +1,5 @@
 ﻿/* ADDED NAMESPACES */
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,36 +12,35 @@ namespace te404
         /* MAIN METHOD */
         static void Main(string[] args)
         {
+            Console.WriteLine("Welcome to the wild west!");
+
             // Test input
             String[] test =
             { "NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST" };
 
-            if (ValidateValues(test)){
+            // Print input
+            PrintInput(test);
 
+            // Validates the input
+            if (ValidateValues(test))
+            {
                 // Creation of the path
-                List<Direction> directions = new List<Direction>();
-                for (int i = 0; i < teste.Length; i++)
+                List<Direc> directions = new List<Direc>();
+                for (int i = 0; i < test.Length; i++)
                 {
-                    Direction d = new Direction(teste[i]);
+                    Direc d = GetDirection(test[i].ToLower());
                     directions.Add(d);
                 }
                 Path path = new Path(directions);
 
                 // Optimize path
-                p.DirReduc();
+                path.DirReduc();
 
-                Console.WriteLine("***MENU***");
-                Console.WriteLine("0 - Caps");
-                Console.WriteLine("1 - Caps");
-                Console.WriteLine("How do you wish to print the values?");
-
-                int option;
-                do {
-                    option = Console.ReadLine();
-                } while( option < 0 || option > 3 );
+                // Read option from console
+                int option = ReadOption();
 
                 // Print the final path
-                p.PrintPath(option);
+                path.PrintPath(option);
             }
             else
             {
@@ -51,69 +49,92 @@ namespace te404
         }
 
         /* VALIDATE VALUES METHOD */
-        private bool validateValues (String[] v)
+        private static bool ValidateValues(String[] v)
         {
-            String[] valid = {"NORTH","North","SOUTH","South","EAST","East","WEST","West"};
+            // Valid values
+            String[] valid = { "north", "south", "east", "west" };
+
+            // Loop through input values
             for (int i = 0; i < v.Length; i++)
             {
-                if(Array.IndexOf(valid, v[i]) < 0)
-                {                    
-                    return false
+                if (Array.IndexOf(valid, v[i].ToLower()) < 0)
+                {
+                    return false;
                 }
             }
 
             return true;
         }
+
+        /* PRINT INPUT METHOD */
+        private static void PrintInput(String[] input)
+        {
+            Console.WriteLine("The current input is:");
+            for (int i = 0; i < input.Length; i++)
+            {
+                Console.WriteLine(input[i]);
+            }
+            Console.WriteLine("\n");
+        }
+
+        /* READ OPTIONS METHOD */
+        private static int ReadOption()
+        {
+            int option;
+
+            // Print menu
+            Console.WriteLine("***MENU***");
+            Console.WriteLine("0 - Caps");
+            Console.WriteLine("1 - Camel Case");
+            Console.WriteLine("How do you wish to print the values?");
+
+            // Read input
+            do
+            {
+                option = int.Parse(Console.ReadLine());
+                if (option < 0 || option > 1)
+                {
+                    Console.WriteLine("Invalid option!\nPlease type a valid option:");
+                }
+            } while (option < 0 || option > 1);
+
+            return option;
+        }
+
+        /* GET RIGHT DIRECTION OBJECT */
+        private static Direc GetDirection(String dir)
+        {
+            // Check direction
+            if (dir == "north")
+            {
+                return new North();
+            }
+            else if (dir == "south")
+            {
+                return new South();
+            }
+            else if (dir == "west")
+            {
+                return new West();
+            }
+            return new East();
+        }
     }
 
     /* DIRECTION CLASSES */
-    class Direction
+    class Direc
     {
         /* FIELDS */
-        private String name;
-        private int x;
-        private int y;
+        protected String name;
+        protected int x;
+        protected int y;
 
         /* CONSTRUCTOR */
-        public Direction(String n)
+        public Direc()
         {
-            // Check which direction to create
-            switch (n)
-            {
-                "North":
-                "NORTH":
-                    x = 0;
-                    y = 1;
-                    name = "north";
-                    break;
-
-                "South":
-                "SOUTH":
-                    x = 0;
-                    y = -1;
-                    name = "south";
-                    break;
-
-                "East":
-                "EAST":
-                    x = -1;
-                    y = 0;
-                    name = "east";
-                    break;
-
-                "West":
-                "WEST":
-                    x = 1;
-                    y = 0;
-                    name = "west";
-                    break;
-
-                default:
-                    x = 0;
-                    y = 0;
-                    name = "none";
-                    break;
-            }
+            name = "";
+            x = 0;
+            x = 0;
         }
 
         /* GET AND SET METHODS */
@@ -123,16 +144,60 @@ namespace te404
             set { name = value; }
         }
 
-        public String X
+        public int X
         {
             get { return x; }
             set { x = value; }
         }
 
-        public String Y
+        public int Y
         {
             get { return y; }
             set { y = value; }
+        }
+    }
+
+    /* NORTH CLASS */
+    class North : Direc
+    {
+        public North()
+        {
+            this.name = "north";
+            this.x = 0;
+            this.y = 1;
+        }
+    }
+
+    /* SOUTH CLASS */
+    class South : Direc
+    {
+        public South()
+        {
+            this.name = "south";
+            this.x = 0;
+            this.y = -1;
+        }
+    }
+
+    /* EAST CLASS */
+    class East : Direc
+    {
+        public East()
+        {
+            this.name = "east";
+            this.x = -1;
+            this.y = 0;
+        }
+    }
+
+    /* WEST CLASS */
+    class West : Direc
+    {
+        public West()
+        {
+            this.name = "west";
+            this.x = 1;
+            this.y = 0;
         }
     }
 
@@ -140,120 +205,86 @@ namespace te404
     class Path
     {
         /* FIELDS */
-        private List<Direction> directions;
+        private List<Direc> directions;
 
         /* CONSTRUCTOR */
-        public Path(List<Direction> d)
+        public Path(List<Direc> d)
         {
-            directions = new List<Direction>(d);
+            directions = new List<Direc>(d);
         }
 
         /* GET AND SET METHODS */
-        public String Directions
+        public List<Direc> Directions
         {
             get { return directions; }
             set { directions = value.ToList(); }
         }
 
         /* METHOD TO OPTIMIZE PATH */
-        public List<Direction> DirReduc()
+        public void DirReduc()
         {
-            // Variables
-            List<Direction> bestPath = new List<Direction>();
-            String opposite;
-            int index;
+            List<Direc> bestPath = new List<Direc>();
+            int directionX = 0;
+            int directionY = 0;
+            Direc dir;
 
-            // Loop to iterate through directions
-            foreach (Direction d in directions)
-            {
-                opposite = getOpposite(d.Name]);
-
-                if ((bestPath.Contains(opposite)))
-                {
-                    index = bestPath.IndexOf(opposite);
-                    bestPath.RemoveAt(index);
-                }
-                else
-                {
-                    bestPath.Add(d.Name);
-                }
-            }
-
-            directions = new List<Direction>(bestPath);
-        }
-
-        /* METHOD TO OPTIMIZE PATH */
-        public List<Direction> DirReducXY()
-        {
-            List<String> bestPath = new List<String>();
-            int directionX;
-            int directionY;
-
-            foreach (Direction d in directions)
+            // Add directions
+            foreach (Direc d in directions)
             {
                 directionX += d.X;
                 directionY += d.Y;
             }
 
-            if(directionY > 0)
+            // Check what directions to add to the best path
+            if (directionY > 0)
             {
-                bestPath.AddRange(Enumerable.Repeat("north", directionY));
+                dir = new North();
+                bestPath.AddRange(Enumerable.Repeat(dir, directionY));
             }
-            else if(directionY <0)
+            else if (directionY < 0)
             {
-                bestPath.AddRange(Enumerable.Repeat("south", System.Math.Abs(directionY)));
-            }
-
-            if(directionX > 0)
-            {
-                bestPath.AddRange(Enumerable.Repeat("west", directionX));
-            }
-            else if(directionX <0)
-            {
-                bestPath.AddRange(Enumerable.Repeat("east", System.Math.Abs(directionX)));
+                dir = new South();
+                bestPath.AddRange(Enumerable.Repeat(dir, System.Math.Abs(directionY)));
             }
 
-            return bestPath;
-        }
+            if (directionX > 0)
+            {
+                dir = new West();
+                bestPath.AddRange(Enumerable.Repeat(dir, directionX));
+            }
+            else if (directionX < 0)
+            {
+                dir = new East();
+                bestPath.AddRange(Enumerable.Repeat(dir, System.Math.Abs(directionX)));
+            }
 
-        /* METHOD TO GET OPPOSITE DIRECTION */
-        public static String GetOpposite(String element)
-        {
-            if (element == "north")
-            {
-                return "south";
-            }
-            else if (element == "south")
-            {
-                return "north";
-            }
-            else if (element == "east")
-            {
-                return "west";
-            }
-            return "east";
+            directions = bestPath.ToList();
         }
 
         /* METHOD TO DISPLAY PATH */
-        public void PrintPath(int case)
+        public void PrintPath(int cas)
         {
-            Console.WriteLine("The optimized path is the following:");
-            foreach (Direction d in directions)
+            // Prints path
+            Console.WriteLine("\nThe optimized path is the following:");
+            for (int i = 0; i < directions.Count; i++)
             {
-                Console.WriteLine(i + " - " + GetRightCase(d.Name, case));
+                Console.WriteLine(GetRightCase(directions[i].Name, cas));
             }
         }
 
         /* METHOD TO GET LETTERS IN THE RIGHT CASE */
         private static String GetRightCase(String s, int c)
         {
-            if(c == 0)
+            char[] letters;
+
+            // Changes case according to input
+            if (c == 0)
             {
                 return s.ToUpper();
             }
             else if (c == 1)
             {
-                char[] letters = s.ToCharArray();
+                letters = s.ToCharArray();
                 letters[0] = char.ToUpper(letters[0]);
                 return new String(letters);
             }
