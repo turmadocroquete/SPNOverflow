@@ -12,91 +12,138 @@ namespace te404
         /* MAIN METHOD */
         static void Main(string[] args)
         {
+            Console.WriteLine("-------------------------");
             Console.WriteLine("Welcome to the wild west!");
+            Console.WriteLine("-------------------------\n");
 
-            // Test input
-            String[] test =
-            { "NORTH", "SOUTH", "SOUTH", "EAST", "WEST", "NORTH", "WEST" };
+            // Reads user values
+            List <String> input = ReadDirections();
 
             // Print input
-            PrintInput(test);
+            PrintInput(input);
 
-            // Validates the input
-            if (ValidateValues(test))
-            {
-                // Creation of the path
-                List<Direc> directions = new List<Direc>();
-                for (int i = 0; i < test.Length; i++)
-                {
-                    Direc d = GetDirection(test[i].ToLower());
-                    directions.Add(d);
-                }
-                Path path = new Path(directions);
+            Path path = CreatePath(input);
 
-                // Optimize path
-                path.DirReduc();
+            // Optimize path
+            path.DirReduc();
 
-                // Read option from console
-                int option = ReadOption();
+            // Read option from console
+            String option = ReadOption();
 
-                // Print the final path
-                path.PrintPath(option);
-            }
-            else
-            {
-                Console.WriteLine("The values are not valid!");
-            }
+            // Print the final path
+            path.PrintPath(option);
         }
 
-        /* VALIDATE VALUES METHOD */
-        private static bool ValidateValues(String[] v)
+        /* READ DIRECTIONS FROM USER */
+        private static List<String> ReadDirections()
         {
-            // Valid values
-            String[] valid = { "north", "south", "east", "west" };
+            List<String> valid = new List<String> { "north", "south", "east", "west", "exit", "n", "s", "w", "e" };
+            List<String> input = new List <String>();
+            String i = "";
 
-            // Loop through input values
-            for (int i = 0; i < v.Length; i++)
+            Console.WriteLine("***INSTRUCTIONS***");
+            Console.WriteLine("Type the path you want cowboy! Most probabily you will get the best of it ;)");
+            Console.WriteLine("The path choose must contain the following values: (n)orth, (s)outh, (e)ast, (w)est or exit (to stop)!");
+            Console.WriteLine("Values can be in any case...");
+            Console.WriteLine("Here's a path you can try out: north, south, south, west, north!");
+            Console.WriteLine("If you type any other value, you'll be busted!");
+            Console.WriteLine("Best of lucks!");
+            Console.WriteLine("******************\n");
+            do
             {
-                if (Array.IndexOf(valid, v[i].ToLower()) < 0)
+                Console.WriteLine("Your move:");
+                i = Console.ReadLine().ToLower();
+                if (valid.Contains(i) && !(i.Equals("exit")))
                 {
-                    return false;
+                    input.Add(GetFullDirection(i));
                 }
-            }
+                else if(!(valid.Contains(i)))
+                {
+                    Console.WriteLine("Invalid input! The valid values are: north, south, east or west!");
+                }
 
-            return true;
+            } while (!(i.Equals("exit")));
+
+            return input;
+        }
+
+        /* GET FULL NAME OF DIRECTION METHOD */
+        private static String GetFullDirection(String i)
+        {
+            if (i == "n")
+            {
+                return "north";
+            }
+            else if (i == "s")
+            {
+                return "south";
+            }
+            else if (i == "e")
+            {
+                return "east";
+            }
+            else if (i == "w")
+            {
+                return "west";
+            }
+            return i;
         }
 
         /* PRINT INPUT METHOD */
-        private static void PrintInput(String[] input)
+        private static void PrintInput(List<String> input)
         {
-            Console.WriteLine("The current input is:");
-            for (int i = 0; i < input.Length; i++)
+            Console.WriteLine("\nThe current input is:");
+
+            foreach (String i in input)
             {
-                Console.WriteLine(input[i]);
+                Console.WriteLine(i);
             }
             Console.WriteLine("\n");
         }
 
-        /* READ OPTIONS METHOD */
-        private static int ReadOption()
+        /* CREATION OF PATH THROUGH USER INPUT */
+        private static Path CreatePath(List <String> input)
         {
-            int option;
+            Direc d;
+            List<Direc> directions = new List<Direc>();
+
+            // Creation of the path
+            foreach (String i in input)
+            {
+                d = GetDirection(i);
+                directions.Add(d);
+            }
+
+            return new Path(directions);
+        }
+
+        /* READ OPTIONS METHOD */
+        private static String ReadOption()
+        {
+            String option;
 
             // Print menu
-            Console.WriteLine("***MENU***");
-            Console.WriteLine("0 - Caps");
-            Console.WriteLine("1 - Camel Case");
+            Console.WriteLine("Now, lets print!\n");
+            Console.WriteLine("You can use the values inside square brackets to choose the case!");
+            Console.WriteLine("Options:");
+            Console.WriteLine("------------");
+            Console.WriteLine("Caps - [caps]");
+            Console.WriteLine("Camel Case - [camel]\n");
             Console.WriteLine("How do you wish to print the values?");
 
             // Read input
             do
             {
-                option = int.Parse(Console.ReadLine());
-                if (option < 0 || option > 1)
+                option = Console.ReadLine();
+
+                Console.WriteLine(option);
+
+                if (!(option.Equals("caps")) && !(option.Equals("camel")))
                 {
                     Console.WriteLine("Invalid option!\nPlease type a valid option:");
                 }
-            } while (option < 0 || option > 1);
+
+            } while (!(option.Equals("caps")) && !(option.Equals("camel")));
 
             return option;
         }
@@ -262,7 +309,7 @@ namespace te404
         }
 
         /* METHOD TO DISPLAY PATH */
-        public void PrintPath(int cas)
+        public void PrintPath(String cas)
         {
             // Prints path
             Console.WriteLine("\nThe optimized path is the following:");
@@ -273,16 +320,16 @@ namespace te404
         }
 
         /* METHOD TO GET LETTERS IN THE RIGHT CASE */
-        private static String GetRightCase(String s, int c)
+        private static String GetRightCase(String s, String c)
         {
             char[] letters;
 
             // Changes case according to input
-            if (c == 0)
+            if (c.Equals("caps"))
             {
                 return s.ToUpper();
             }
-            else if (c == 1)
+            else if (c.Equals("camel"))
             {
                 letters = s.ToCharArray();
                 letters[0] = char.ToUpper(letters[0]);
